@@ -1,0 +1,462 @@
+/* --- Variáveis de Cor e Estilos Globais --- */
+:root {
+    --bg-color: #121212; /* Preto profundo, mais moderno */
+    --primary-color: #1E1E1E; /* Cinza-escuro para elementos */
+    --text-color: #F5F5F5; /* Branco suave */
+    --accent-color: #8C3A3A; /* Vermelho escuro/Bordô, alinhado à logo */
+    --hover-color: #A34E4E; /* Cor de hover mais clara */
+    --border-color: rgba(255, 255, 255, 0.1); /* Borda sutil para efeito de vidro */
+    --glow-color: rgba(140, 58, 58, 0.5); /* Cor do brilho para o accent */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden; /* Evita scroll horizontal */
+}
+
+/* --- Estilos do Cabeçalho --- */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%; /* Usa porcentagem para ser mais fluido */
+    background-color: transparent; /* Fundo transparente por padrão */
+    border-bottom: 1px solid transparent; /* Borda transparente por padrão */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+.main-header.scrolled {
+    background-color: rgba(26, 24, 24, 0.85); /* Cor de fundo com transparência */
+    backdrop-filter: blur(10px); /* Efeito de desfoque */
+    -webkit-backdrop-filter: blur(10px); /* Suporte para Safari */
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espaço entre a logo e o texto */
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+}
+
+.championship-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.nav-button {
+    background-image: linear-gradient(to right, var(--hover-color) 0%, var(--accent-color) 50%, var(--hover-color) 100%);
+    background-size: 200% auto;
+    color: white;
+    padding: 10px 25px;
+    text-decoration: none;
+    border-radius: 50px; /* Botões em formato de pílula */
+    font-weight: 600;
+    transition: all 0.4s ease;
+    display: inline-block;
+    white-space: nowrap;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.nav-button:hover {
+    background-position: right center;
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px var(--glow-color);
+}
+
+/* --- Seção Hero --- */
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 60vh;
+    padding: 4rem 2rem;
+    background-image: linear-gradient(rgba(26, 24, 24, 0.8), rgba(26, 24, 24, 0.95)), url('hero-background.png');
+    background-size: cover;
+    background-position: center;
+    color: var(--text-color);
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-button {
+    background-image: linear-gradient(to right, var(--hover-color) 0%, var(--accent-color) 50%, var(--hover-color) 100%);
+    background-size: 200% auto;
+    color: white;
+    padding: 14px 30px;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.4s ease;
+    display: inline-block;
+    border: none;
+    box-shadow: 0 0 20px var(--glow-color);
+}
+
+.cta-button:hover {
+    background-position: right center;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 30px var(--glow-color);
+}
+
+/* --- Seção Eliminatórias (Playoffs) --- */
+#playoffs {
+    padding: 4rem 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    background-image: linear-gradient(rgba(18, 18, 18, 0.95), rgba(18, 18, 18, 0.99)), url('playoffs-background.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Efeito parallax sutil */
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+#playoffs h2 {
+    font-size: 2.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #b0b0b0;
+}
+
+.round {
+    margin-bottom: 4rem;
+}
+
+.round:last-child {
+    margin-bottom: 0;
+}
+
+.round h3 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: var(--accent-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* --- Sistema de Abas --- */
+.tab-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 3rem;
+    padding: 8px;
+    background: rgba(30, 30, 30, 0.7);
+    border-radius: 50px;
+    border: 1px solid var(--border-color);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: var(--text-color);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    white-space: nowrap;
+}
+
+.tab-button.active, .tab-button:hover {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.matches-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.match-card {
+    background: linear-gradient(105deg, #2a2a2a, #1e1e1e);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.match-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+        var(--glow-color),
+        transparent 30%
+    );
+    transform-origin: center center;
+    animation: rotate 5s linear infinite;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.match-card:hover::before {
+    opacity: 1;
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.match-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px var(--glow-color);
+}
+
+.match-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+.match-card:hover .match-overlay {
+    opacity: 1;
+}
+
+.match-button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transform: scale(0.9);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.match-card:hover .match-button {
+    transform: scale(1);
+}
+
+.match-button:hover {
+    background-color: var(--hover-color);
+}
+
+.team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    text-align: center;
+    z-index: 2;
+}
+
+.team-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.match-card:hover .team-logo {
+    transform: scale(1.1);
+}
+
+.team-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
+.team-b {
+    align-items: center;
+}
+
+.vs {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 0 1rem;
+    text-shadow: 0 0 10px var(--glow-color);
+    z-index: 2;
+}
+
+/* Estilo específico para a final */
+.final-match {
+    grid-template-columns: 1fr !important;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.final-match .match-card {
+    border-width: 2px;
+    border-color: var(--accent-color);
+}
+
+/* --- Animação de Revelação --- */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- Placeholder de Conteúdo --- */
+.content-placeholder {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.content-placeholder h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* --- Responsividade para Mobile --- */
+@media (min-width: 992px) {
+    .matches-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-header {
+        padding: 0.8rem 4%;
+    }
+
+    .championship-name {
+        display: none; /* Esconde o nome do campeonato em telas menores */
+    }
+
+    .logo {
+        height: 40px; /* Diminui um pouco a logo no mobile */
+    }
+
+    .nav-button {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+    
+    #playoffs h2 {
+        font-size: 2.2rem;
+    }
+
+    .match-card {
+        flex-direction: row;
+        padding: 1rem;
+    }
+
+    .team-logo {
+        width: 45px;
+        height: 45px;
+    }
+
+    .team-name {
+        font-size: 0.75rem;
+    }
+
+    .vs {
+        font-size: 1rem;
+    }
+}

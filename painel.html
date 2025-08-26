@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Administrativo CPM</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #e9ecef;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 450px;
+    margin: 80px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.15);
+    text-align: center;
+  }
+  h1 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+  }
+  button:hover {
+    background: #0056b3;
+  }
+  .hidden {
+    display: none;
+  }
+  .match-card {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 8px 0;
+    text-align: left;
+    font-size: 14px;
+    border: 1px solid #ddd;
+  }
+  .logout-btn {
+    background: #dc3545;
+    margin-top: 20px;
+  }
+  .logout-btn:hover {
+    background: #a71d2a;
+  }
+  #login-msg {
+    color: red;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="login-container">
+  <h1>Login do Painel</h1>
+  <input type="text" id="username" placeholder="Usuário">
+  <input type="password" id="password" placeholder="Senha">
+  <button onclick="login()">Entrar</button>
+  <p id="login-msg"></p>
+</div>
+
+<div class="container hidden" id="admin-container">
+  <h1>Painel CPM</h1>
+
+  <select id="round">
+    <option value="oitavas">Oitavas de Final</option>
+    <option value="quartas">Quartas de Final</option>
+    <option value="semifinais">Semifinais</option>
+    <option value="final">Final</option>
+  </select>
+  <input type="text" id="teamA" placeholder="Time A">
+  <input type="text" id="teamB" placeholder="Time B">
+  <input type="text" id="logoA" placeholder="Logo Time A (ex: a.png)">
+  <input type="text" id="logoB" placeholder="Logo Time B (ex: b.png)">
+  <input type="number" id="scoreA" placeholder="Placar A">
+  <input type="number" id="scoreB" placeholder="Placar B">
+  <button onclick="addMatch()">Adicionar Partida</button>
+
+  <h2 style="margin-top:30px;">Partidas Registradas</h2>
+  <div id="matches-list"></div>
+
+  <button class="logout-btn" onclick="logout()">Sair</button>
+</div>
+
+<script>
+const API = "http://localhost:3000";
+
+function login() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  fetch(API + "/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      document.getElementById("login-container").classList.add("hidden");
+      document.getElementById("admin-container").classList.remove("hidden");
+      loadMatches();
+    } else {
+      document.getElementById("login-msg").innerText = "Usuário ou senha incorretos!";
+    }
+  })
+  .catch(() => {
+    document.getElementById("login-msg").innerText = "Erro ao conectar no servidor.";
+  });
+}
+
+function loadMatches() {
+  fetch(API + "/api/matches")
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("matches-list");
+      container.innerHTML = "";
+      for (const round in data) {
+        data[round].forEach(match => {
+          const div = document.createElement("div");
+          div.className = "match-card";
+          div.innerHTML = `<strong>${round}</strong>: ${match.teamA.name} (${match.scoreA}) vs ${match.teamB.name} (${match.scoreB})`;
+          container.appendChild(div);
+        });
+      }
+    });
+}
+
+function addMatch() {
+  const round = document.getElementById("round").value;
+  const teamA = { name: document.getElementById("teamA").value, logo: document.getElementById("logoA").value };
+  const teamB = { name: document.getElementById("teamB").value, logo: document.getElementById("logoB").value };
+  const scoreA = document.getElementById("scoreA").value;
+  const scoreB = document.getElementById("scoreB").value;
+
+  fetch(API + "/api/add-match", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ round, teamA, teamB, scoreA, scoreB })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      loadMatches();
+      clearForm();
+    }
+  });
+}
+
+function clearForm() {
+  document.getElementById("teamA").value = "";
+  document.getElementById("teamB").value = "";
+  document.getElementById("logoA").value = "";
+  document.getElementById("logoB").value = "";
+  document.getElementById("scoreA").value = "";
+  document.getElementById("scoreB").value = "";
+}
+
+function logout() {
+  document.getElementById("admin-container").classList.add("hidden");
+  document.getElementById("login-container").classList.remove("hidden");
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+}
+</script>
+
+</body>
+</html>8

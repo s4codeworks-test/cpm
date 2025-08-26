@@ -1,0 +1,47 @@
+{
+  "oitavas": [
+    {
+      "teamA": { "name": "Corinthians Steamrollers", "logo": "corinthians_steamrollers.png" },
+      "teamB": { "name": "Santos Tsunamis", "logo": "santos_tsunamis.png" },
+      "scoreA": null, "scoreB": null
+    },
+    {
+      "teamA": { "name": "Palmeiras Esmeraldas", "logo": "palmeiras_esmeraldas.png" },
+      "teamB": { "name": "Santo André Hawks", "logo": "santo_andre_hawks.png" },
+      "scoreA": null, "scoreB": null
+    },
+    {
+      "teamA": { "name": "São Paulo Soberanos", "logo": "sao_paulo_soberanos.png" },
+      "teamB": { "name": "Campinas Phoenix", "logo": "campinas_phoenix.png" },
+      "scoreA": null, "scoreB": null
+    },
+    {
+      "teamA": { "name": "Guarulhos Rhinos", "logo": "guarulhos_rhinos.png" },
+      "teamB": { "name": "Osasco Predators", "logo": "osasco_predators.png" },
+      "scoreA": null, "scoreB": null
+    },
+    {
+      "teamA": { "name": "São Bernardo Golden Knights", "logo": "sao_bernardo_golden_knights.png" },
+      "teamB": { "name": "Sorocaba Storm", "logo": "sorocaba_storm.png" },
+      "scoreA": null, "scoreB": null
+    },
+    {
+      "teamA": { "name": "Ribeirão Preto Vipers", "logo": "ribeirao_preto_vipers.png" },
+      "teamB": { "name": "São José dos Campos Titans", "logo": "sao_jose_dos_campos_titans.png" },
+      "scoreA": null, "scoreB": null
+    },
+    {
+      "teamA": { "name": "Mogi das Cruzes Wizards", "logo": "mogi_das_cruzes_wizards.png" },
+      "teamB": { "name": "Jundiaí Jaguars", "logo": "jundiai_jaguars.png" },
+      "scoreA": null, "scoreB": null
+    },
+    {
+      "teamA": { "name": "Barueri Bears", "logo": "barueri_bears.png" },
+      "teamB": { "name": "Piracicaba Pirates", "logo": "piracicaba_pirates.png" },
+      "scoreA": null, "scoreB": null
+    }
+  ],
+  "quartas": [],
+  "semifinais": [],
+  "final": []
+}
