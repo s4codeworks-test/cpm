@@ -68,13 +68,21 @@ async function writeMatches(matches) {
 
 // Rotas da API
 
+// Endpoint de teste
+app.get('/test', (req, res) => {
+  res.json({ message: 'Servidor funcionando!', timestamp: new Date().toISOString() });
+});
+
 // Login do painel administrativo
 app.post('/login', (req, res) => {
+  console.log('Login attempt:', req.body);
   const { username, password } = req.body;
   
   if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+    console.log('Login successful');
     res.json({ success: true, message: 'Login realizado com sucesso' });
   } else {
+    console.log('Login failed');
     res.status(401).json({ success: false, message: 'Credenciais inválidas' });
   }
 });
