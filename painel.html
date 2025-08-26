@@ -585,6 +585,19 @@ function showAlert(message, type = 'error') {
   }, 5000);
 }
 
+function showAlert(message, type = 'error') {
+  const alertDiv = document.createElement('div');
+  alertDiv.className = `alert alert-${type}`;
+  alertDiv.innerHTML = message;
+  
+  const container = document.querySelector('.container:not(.hidden), .admin-container:not(.hidden)');
+  container.insertBefore(alertDiv, container.firstChild);
+  
+  setTimeout(() => {
+    alertDiv.remove();
+  }, 5000);
+}
+
 function login() {
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
