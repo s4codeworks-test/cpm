@@ -7,17 +7,30 @@ const app = express();
 const PORT = 3000;
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 app.use(express.static('.'));
+
+// Headers adicionais para debugging
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
+});
 
 // Arquivo para armazenar partidas
 const MATCHES_FILE = path.join(__dirname, 'matches.json');
 
 // Credenciais de admin (em produção, use um sistema mais seguro)
 const ADMIN_CREDENTIALS = {
-  username: 'admin',
-  password: 'cpm2024'
+  username: 'cpmadmin2025',
+  password: 'cpm9299'
 };
 
 // Funções utilitárias
@@ -247,7 +260,7 @@ app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
   console.log(`📊 Painel administrativo: http://localhost:${PORT}/painel.html`);
   console.log(`🏆 Site principal: http://localhost:${PORT}/index.html`);
-  console.log(`📋 Login do painel: admin / cpm2024`);
+  console.log(`📋 Login do painel: cpmadmin2025 / cpm9299`);
 });
 
 // Graceful shutdown

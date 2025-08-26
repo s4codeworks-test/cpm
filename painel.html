@@ -533,7 +533,44 @@
 </div>
 
 <script>
-const API = "http://localhost:3000";
+// Tenta múltiplas URLs caso uma falhe
+const API_ENDPOINTS = [
+  "http://localhost:3000",
+  "http://127.0.0.1:3000", 
+  window.location.protocol + "//" + window.location.hostname + ":3000"
+];
+
+let API = API_ENDPOINTS[0];
+
+// Função para testar conectividade
+async function testConnection() {
+  for (const endpoint of API_ENDPOINTS) {
+    try {
+      console.log(`Testando conexão com: ${endpoint}`);
+      const response = await fetch(endpoint + "/api/matches", { 
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache'
+      });
+      if (response.ok) {
+        API = endpoint;
+        console.log(`Conexão estabelecida com: ${API}`);
+        return true;
+      }
+    } catch (error) {
+      console.log(`Falha ao conectar com ${endpoint}:`, error.message);
+    }
+  }
+  return false;
+}
+
+// Testar conexão quando a página carregar
+window.addEventListener('DOMContentLoaded', async () => {
+  const connected = await testConnection();
+  if (!connected) {
+    showAlert("Não foi possível conectar ao servidor. Verifique se o servidor está rodando na porta 3000.");
+  }
+});
 
 function showAlert(message, type = 'error') {
   const alertDiv = document.createElement('div');
@@ -562,13 +599,27 @@ function login() {
   btn.innerHTML = '<div class="loading"></div> Entrando...';
   btn.disabled = true;
 
+  console.log('Tentando fazer login...', { username, serverUrl: API + "/login" });
+
   fetch(API + "/login", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password })
+    headers: { 
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({ username, password }),
+    mode: 'cors',
+    cache: 'no-cache'
   })
-  .then(res => res.json())
+  .then(response => {
+    console.log('Resposta do servidor:', response.status, response.statusText);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    return response.json();
+  })
   .then(data => {
+    console.log('Dados recebidos:', data);
     if (data.success) {
       document.getElementById("login-container").classList.add("hidden");
       document.getElementById("admin-container").classList.remove("hidden");
@@ -579,8 +630,20 @@ function login() {
     }
   })
   .catch((error) => {
-    console.error('Erro:', error);
-    showAlert("Erro ao conectar no servidor. Verifique se o servidor está rodando.");
+    console.error('Erro completo:', error);
+    let errorMessage = "Erro ao conectar no servidor.";
+    
+    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+      errorMessage += " Verifique se o servidor está rodando em " + API;
+    } else if (error.message.includes('HTTP 404')) {
+      errorMessage += " Endpoint de login não encontrado.";
+    } else if (error.message.includes('HTTP 500')) {
+      errorMessage += " Erro interno do servidor.";
+    } else {
+      errorMessage += " " + error.message;
+    }
+    
+    showAlert(errorMessage);
   })
   .finally(() => {
     btn.innerHTML = originalText;

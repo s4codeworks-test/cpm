@@ -23,8 +23,8 @@ Sistema completo para gerenciamento do Campeonato Paulista de MamoBall com API b
 ### Painel Administrativo
 - **URL**: http://localhost:3000/painel.html
 - **Credenciais**:
-  - Usuário: `admin`
-  - Senha: `cpm2024`
+  - Usuário: `cpmadmin2025`
+  - Senha: `cpm9299`
 - **Funcionalidades**:
   - Dashboard com estatísticas
   - Adicionar partidas com placares
