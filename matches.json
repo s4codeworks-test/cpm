@@ -1,6 +1,50 @@
 {
-  "oitavas": [],
-  "quartas": [],
+  "oitavas": [
+    {
+      "id": 1756244485540,
+      "teamA": {
+        "name": "Corinthians Steamrollers",
+        "logo": "corinthians_steamrollers.png"
+      },
+      "teamB": {
+        "name": "Santos Tsunamis",
+        "logo": "santos_tsunamis.png"
+      },
+      "scoreA": 3,
+      "scoreB": 1,
+      "createdAt": "2025-08-26T21:41:25.540Z"
+    },
+    {
+      "id": 1756244490385,
+      "teamA": {
+        "name": "Palmeiras Esmeraldas",
+        "logo": "palmeiras_esmeraldas.png"
+      },
+      "teamB": {
+        "name": "Santo André Hawks",
+        "logo": "santo_andre_hawks.png"
+      },
+      "scoreA": 2,
+      "scoreB": null,
+      "createdAt": "2025-08-26T21:41:30.385Z"
+    }
+  ],
+  "quartas": [
+    {
+      "id": 1756244494441,
+      "teamA": {
+        "name": "Corinthians Steamrollers",
+        "logo": "corinthians_steamrollers.png"
+      },
+      "teamB": {
+        "name": "Palmeiras Esmeraldas",
+        "logo": "palmeiras_esmeraldas.png"
+      },
+      "scoreA": null,
+      "scoreB": null,
+      "createdAt": "2025-08-26T21:41:34.441Z"
+    }
+  ],
   "semifinais": [],
   "final": []
 }
