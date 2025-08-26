@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Administrativo CPM - Debug</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  :root {
+    --primary-color: #6366f1;
+    --primary-dark: #4f46e5;
+    --secondary-color: #f1f5f9;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --text-dark: #0f172a;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    box-shadow: var(--card-shadow-hover);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .logo {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .logo h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+  }
+
+  .logo p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .input-group {
+    position: relative;
+  }
+
+  .input-group i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+
+  input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: white;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
+
+  .btn {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .btn-primary {
+    background: var(--primary-color);
+    color: white;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .btn-warning {
+    background: var(--warning-color);
+    color: white;
+  }
+
+  .btn-warning:hover:not(:disabled) {
+    background: #d97706;
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .alert {
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+    font-weight: 500;
+  }
+
+  .alert-error {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
+  .alert-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+
+  .debug-info {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+    margin: 1rem 0;
+    border: 1px solid #dee2e6;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .success-page {
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .success-icon {
+    font-size: 4rem;
+    color: var(--success-color);
+    margin-bottom: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="login-container">
+  <div class="logo">
+    <h1><i class="fas fa-bug"></i> CPM Debug</h1>
+    <p>Painel de Debug para Problemas de Login</p>
+  </div>
+
+  <div class="form-group">
+    <label for="username">Usuário</label>
+    <div class="input-group">
+      <i class="fas fa-user"></i>
+      <input type="text" id="username" placeholder="Digite seu usuário" value="cpmadmin2025">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="password">Senha</label>
+    <div class="input-group">
+      <i class="fas fa-lock"></i>
+      <input type="password" id="password" placeholder="Digite sua senha" value="cpm9299">
+    </div>
+  </div>
+
+  <button class="btn btn-warning" onclick="testConnection()">
+    <i class="fas fa-wifi"></i>
+    1. Testar Conexão com Servidor
+  </button>
+
+  <button class="btn btn-primary" onclick="testLogin()">
+    <i class="fas fa-sign-in-alt"></i>
+    2. Testar Login
+  </button>
+
+  <div id="alerts-container"></div>
+  <div id="debug-info" class="debug-info" style="display: none;"></div>
+</div>
+
+<div class="container hidden" id="success-container">
+  <div class="success-page">
+    <div class="success-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <h2>🎉 Login Bem-Sucedido!</h2>
+    <p>O sistema de login está funcionando corretamente.</p>
+    <button class="btn btn-primary" onclick="goBack()" style="margin-top: 2rem;">
+      <i class="fas fa-arrow-left"></i>
+      Voltar ao Teste
+    </button>
+  </div>
+</div>
+
+<script>
+const API_BASE = "http://localhost:3000";
+
+function log(message, type = 'info') {
+  const debugDiv = document.getElementById('debug-info');
+  const timestamp = new Date().toLocaleTimeString();
+  const logMessage = `[${timestamp}] ${type.toUpperCase()}: ${message}`;
+  
+  debugDiv.textContent += logMessage + '\n';
+  debugDiv.scrollTop = debugDiv.scrollHeight;
+  debugDiv.style.display = 'block';
+  
+  console.log(logMessage);
+}
+
+function showAlert(message, type = 'error') {
+  const alertsContainer = document.getElementById('alerts-container');
+  
+  // Remove alertas antigos
+  alertsContainer.innerHTML = '';
+  
+  const alertDiv = document.createElement('div');
+  alertDiv.className = `alert alert-${type}`;
+  alertDiv.innerHTML = message;
+  alertsContainer.appendChild(alertDiv);
+  
+  setTimeout(() => {
+    alertDiv.remove();
+  }, 5000);
+}
+
+async function testConnection() {
+  log('🔧 Iniciando teste de conexão com o servidor...');
+  
+  const btn = event.target;
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testando...';
+  btn.disabled = true;
+  
+  try {
+    // Teste 1: Endpoint de teste
+    log(`Testando endpoint: ${API_BASE}/test`);
+    
+    const testResponse = await fetch(`${API_BASE}/test`, {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-cache'
+    });
+    
+    log(`Status da resposta: ${testResponse.status} ${testResponse.statusText}`);
+    log(`URL da resposta: ${testResponse.url}`);
+    
+    if (testResponse.ok) {
+      const testData = await testResponse.json();
+      log(`✅ Servidor respondeu: ${JSON.stringify(testData)}`);
+      showAlert("✅ Servidor está funcionando perfeitamente!", "success");
+      
+      // Teste 2: Endpoint de partidas
+      log(`Testando endpoint: ${API_BASE}/api/matches`);
+      const matchesResponse = await fetch(`${API_BASE}/api/matches`);
+      log(`Status matches: ${matchesResponse.status} ${matchesResponse.statusText}`);
+      
+      if (matchesResponse.ok) {
+        log('✅ Endpoint de partidas também está funcionando');
+      }
+      
+    } else {
+      log(`❌ Servidor retornou erro: ${testResponse.status}`);
+      const errorText = await testResponse.text();
+      log(`Corpo da resposta de erro: ${errorText}`);
+      showAlert(`❌ Servidor retornou erro ${testResponse.status}`, "error");
+    }
+    
+  } catch (error) {
+    log(`❌ Erro de conexão: ${error.name} - ${error.message}`);
+    log(`Stack trace: ${error.stack}`);
+    
+    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+      showAlert("❌ Erro de rede: Não foi possível conectar ao servidor. Verifique se está rodando em http://localhost:3000", "error");
+    } else {
+      showAlert(`❌ Erro: ${error.message}`, "error");
+    }
+  } finally {
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+  }
+}
+
+async function testLogin() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!username || !password) {
+    showAlert("⚠️ Por favor, preencha todos os campos.", "error");
+    return;
+  }
+
+  log('🔐 Iniciando teste de login...');
+  log(`Usuário: ${username}`);
+  log(`Senha: ${password.replace(/./g, '*')}`);
+  log(`URL de login: ${API_BASE}/login`);
+
+  const btn = event.target;
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testando Login...';
+  btn.disabled = true;
+
+  try {
+    const requestBody = { username, password };
+    log(`Corpo da requisição: ${JSON.stringify(requestBody)}`);
+    
+    const response = await fetch(`${API_BASE}/login`, {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(requestBody),
+      mode: 'cors',
+      cache: 'no-cache'
+    });
+
+    log(`✅ Resposta recebida!`);
+    log(`Status: ${response.status} ${response.statusText}`);
+    log(`URL final: ${response.url}`);
+    log(`Content-Type: ${response.headers.get('content-type')}`);
+    log(`CORS headers: ${response.headers.get('access-control-allow-origin')}`);
+
+    if (!response.ok) {
+      log(`❌ Resposta não OK: ${response.status}`);
+      const errorText = await response.text();
+      log(`Corpo da resposta de erro: ${errorText}`);
+      
+      if (response.status === 404) {
+        showAlert("❌ Endpoint de login não encontrado (404). O servidor pode não estar rodando ou a URL está incorreta.", "error");
+      } else if (response.status === 401) {
+        showAlert("❌ Credenciais inválidas (401). Verifique usuário e senha.", "error");
+      } else {
+        showAlert(`❌ Erro ${response.status}: ${response.statusText}`, "error");
+      }
+      return;
+    }
+
+    log('📄 Processando resposta JSON...');
+    const data = await response.json();
+    log(`✅ Dados recebidos: ${JSON.stringify(data, null, 2)}`);
+
+    if (data && data.success) {
+      log('🎉 LOGIN BEM-SUCEDIDO!');
+      showAlert("🎉 Login realizado com sucesso!", "success");
+      
+      // Mostrar tela de sucesso
+      document.getElementById("login-container").classList.add("hidden");
+      document.getElementById("success-container").classList.remove("hidden");
+      
+    } else {
+      log('❌ Login falhou - resposta indica falha');
+      showAlert("❌ Login falhou: " + (data.message || "Credenciais incorretas"), "error");
+    }
+
+  } catch (error) {
+    log(`❌ Erro durante o login: ${error.name} - ${error.message}`);
+    log(`Stack trace: ${error.stack}`);
+    
+    let errorMessage = "Erro desconhecido";
+    
+    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+      errorMessage = "Erro de rede: Não foi possível conectar ao servidor";
+    } else if (error.message.includes('JSON')) {
+      errorMessage = "Erro ao processar resposta do servidor (JSON inválido)";
+    } else {
+      errorMessage = error.message;
+    }
+    
+    showAlert(`❌ ${errorMessage}`, "error");
+    
+  } finally {
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+  }
+}
+
+function goBack() {
+  document.getElementById("success-container").classList.add("hidden");
+  document.getElementById("login-container").classList.remove("hidden");
+  log('🔄 Voltando ao teste...');
+}
+
+// Permitir login com Enter
+document.getElementById("password").addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    testLogin();
+  }
+});
+
+document.getElementById("username").addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    document.getElementById("password").focus();
+  }
+});
+
+// Inicialização
+window.addEventListener('DOMContentLoaded', () => {
+  log('📱 Página de debug carregada');
+  log(`🔗 API Base URL: ${API_BASE}`);
+  log('ℹ️ Use "1. Testar Conexão" primeiro, depois "2. Testar Login"');
+});
+</script>
+
+</body>
+</html>
